@@ -156,21 +156,22 @@ class Bradesco extends AbstractRemessa implements RemessaContract
 
     /**
      * @param BoletoContract $boleto
+     * @param array $pagadorDebito
      *
      * @return $this
      * @throws \Exception
      */
-    public function addBoleto(BoletoContract $boleto)
+    public function addBoleto(BoletoContract $boleto, array $pagadorDebito = null)
     {
         $this->boletos[] = $boleto;
         $this->iniciaDetalhe();
 
         $this->add(1, 1, '1');
-        $this->add(2, 6, '');
-        $this->add(7, 7, '');
-        $this->add(8, 12, '');
-        $this->add(13, 19, '');
-        $this->add(20, 20, '');
+        $this->add(2, 6, $pagadorDebito['agencia'] ?? '');
+        $this->add(7, 7, $pagadorDebito['digito_agencia'] ?? '');
+        $this->add(8, 12, $pagadorDebito['razao_conta'] ?? '');
+        $this->add(13, 19, $pagadorDebito['conta_corrente'] ?? '');
+        $this->add(20, 20, $pagadorDebito['digito_conta'] ?? '');
         $this->add(21, 21, '0');
         $this->add(22, 24, Util::formatCnab('9', $this->getCarteira(), 3));
         $this->add(25, 29, Util::formatCnab('9', $this->getAgencia(), 5));
